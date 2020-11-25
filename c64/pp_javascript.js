@@ -1,9 +1,14 @@
-
-
-
 function handleVirtualKey( value, down )
 {
 	Module.setKey(value, down);
+}
+
+function handleMute(event)
+{
+	var mute = document.getElementById("mute");
+  Module.toggleMute();
+  mute.style.visibility = "hidden";
+	return false;
 }
 
 function handleSnapClick(event)
@@ -412,6 +417,11 @@ function addHandler()
 	document.getElementById('snap_form').addEventListener("submit", function(e) {
 		e.preventDefault();
 		handleSnapClick();
+		}, false);
+
+	document.getElementById('mute').addEventListener("click", function(e) {
+		e.preventDefault();
+		handleMute();
 		}, false);
 }
 
