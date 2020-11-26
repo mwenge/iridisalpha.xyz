@@ -321,20 +321,24 @@ function c64_global_startup()
 }
 
 
+function changeIcon(url) { document.getElementById("favicon").href = url; }
 
 var arrow_keys_handler = function(e) {
     switch(e.keyCode){
         case 37: case 39: case 38:  case 40: case 8: case 9: case 13:
         case 32: case 17: case 112: case 114: case 116: case 118:
-        if ( Module.hasFocus ) {
-          console.log(Module.hasFocus);
-          e.preventDefault();
-        }
-        break;
+          if ( Module.hasFocus ) {
+            e.preventDefault();
+          }
+          break;
         default: break;
     }
+    if (e.keyCode == 37) {
+      changeIcon('favicon-left.png');
+    } else if (e.keyCode == 39) {
+      changeIcon('favicon-right.png');
+    }
 };
-
 
 function addHandler()
 {
