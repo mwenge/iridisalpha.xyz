@@ -337,6 +337,10 @@ var arrow_keys_handler = function(e) {
       changeIcon('favicon-left.png');
     } else if (e.keyCode == 39) {
       changeIcon('favicon-right.png');
+    } else if (e.keyCode == 83) {
+      Module.saveGame('iridis_progress.s64');
+    } else if (e.keyCode == 82) {
+      Module.loadGame('iridis_progress.s64');
     }
 };
 

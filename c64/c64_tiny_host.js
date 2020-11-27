@@ -63,7 +63,8 @@ var Module = {
     // Set the preferred joystick port for iridis alpha
     setTimeout(function() { Module.ccall('js_selectJoystick', 'number', ['number', 'number'], [29, 32]); }, 5);
     // Save the game every 20 seconds
-    setInterval(function() { Module.saveGame(); }, 20000);
+		var storageSnapshot = 'iridis_savedgame.s64';
+    setInterval(function() { Module.saveGame(storageSnapshot); }, 20000);
 	},
 	requestValue: function(name) {
 		if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
@@ -438,8 +439,7 @@ var Module = {
 		}
 		return null;
 	},
-	saveGame: function() {
-		var storageSnapshot = 'iridis_savedgame.s64';
+	saveGame: function(storageSnapshot) {
 		var res = Module.ccall('js_snapshotStorage', 'number', ['number', 'string'], [1, 'data/'+storageSnapshot]);
 		if( res ) {
 			FS.syncfs(function (err) {
@@ -448,8 +448,7 @@ var Module = {
 		}
 		return res;
 	},
-	loadGame: function() {
-		var storageSnapshot = 'iridis_savedgame.s64';
+	loadGame: function(storageSnapshot) {
 		var res = Module.ccall('js_snapshotStorage', 'number', ['number', 'string'], [0, 'data/'+storageSnapshot]);
 		if( res ) {
 			FS.syncfs(function (err) {
