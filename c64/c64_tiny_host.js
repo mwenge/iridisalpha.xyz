@@ -64,7 +64,7 @@ var Module = {
     setTimeout(function() { Module.ccall('js_selectJoystick', 'number', ['number', 'number'], [29, 32]); }, 5);
     // Save the game every 20 seconds
 		var storageSnapshot = 'iridis_savedgame.s64';
-    setInterval(function() { Module.saveGame(storageSnapshot); }, 20000);
+    setInterval(function() { Module.maybeSaveGame(storageSnapshot); }, 20000);
 	},
 	requestValue: function(name) {
 		if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
@@ -438,6 +438,25 @@ var Module = {
 		catch(e) {
 		}
 		return null;
+	},
+	maybeSaveGame: function(storageSnapshot) {
+    var l = Module.saveSnapshotData()[1];
+    var s = new TextDecoder("latin1").decode(l);
+
+    var score = /\xae\xb0\xaf\xb1([0-9]{7})/.exec(s);
+    if (!score) {
+      return;
+    }
+    score = score[1];
+    score = parseInt(score, 10);
+    if (score == 0) {
+      return;
+    }
+    var level = /\xb4([0-9]{2})/.exec(s)[1];
+    var energy = /‘“([0-9A-F]{1}[0-9A-F]{1})/.exec(s)[1];
+    console.log("Score", score, "Level", level, "Energy", energy);
+
+    Module.saveGame(storageSnapshot);
 	},
 	saveGame: function(storageSnapshot) {
 		var res = Module.ccall('js_snapshotStorage', 'number', ['number', 'string'], [1, 'data/'+storageSnapshot]);
