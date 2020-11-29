@@ -21,8 +21,13 @@ body {
   left: 50%;
   transform: translateX(-50%);
   top: 0;
+  animation-duration: 0.75s;
+  animation-delay: 0.25s;
+  animation-timing-function: cubic-bezier(0.1,0.2,0.8,1);
   height: 100vh;
+  animation-name: zoomout;
 }
+@keyframes zoomout {from{ height: 200vh; } to{ }}
 
 #canvas:-webkit-full-screen 
 {

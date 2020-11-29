@@ -62,7 +62,6 @@ var Module = {
 		}
     // Set the preferred joystick port for iridis alpha
     setTimeout(function() { Module.ccall('js_selectJoystick', 'number', ['number', 'number'], [29, 32]); }, 5);
-    setTimeout(function() { canvas.style.visibility = "visible"; }, 500);
     // Save the game every 20 seconds
 		var storageSnapshot = 'iridis_savedgame.s64';
     setInterval(function() { Module.maybeSaveGame(storageSnapshot); }, 20000);
