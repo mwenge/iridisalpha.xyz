@@ -46,7 +46,7 @@ var Module = {
 		c64_global_startup();
 		
 		var room = this.requestValue('room');
-		var file = 'Iridis_Alpha.s64'
+		var file = 'Iridis_Alpha_Llamasoft.s64'
 		var game = this.hasSavedGame();
 		if( game != null ) {
 			this.loadGame(game);
