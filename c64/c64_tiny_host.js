@@ -6,6 +6,8 @@ var highScoreStatus = document.getElementById('highScore_status');
 var highScoreButton = document.getElementById('highScore_button');
 var highScoreTitle = document.getElementById('highScore_title');
 var helpElement = document.getElementById('help_div');
+var highScoreSnapshot = 'iridis_highscore.s64';
+var progressSnapshot = 'iridis_savedgame.s64';
 
 
 var Module = {
@@ -63,8 +65,7 @@ var Module = {
     // Set the preferred joystick port for iridis alpha
     setTimeout(function() { Module.ccall('js_selectJoystick', 'number', ['number', 'number'], [29, 32]); }, 5);
     // Save the game every 20 seconds
-		var storageSnapshot = 'iridis_savedgame.s64';
-    setInterval(function() { Module.maybeSaveGame(storageSnapshot); }, 20000);
+    setInterval(function() { Module.maybeSaveGame(progressSnapshot); }, 20000);
 	},
 	requestValue: function(name) {
 		if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
@@ -429,8 +430,7 @@ var Module = {
 		}
 		return false;
 	},
-	hasSavedGame: function() {
-		var storageSnapshot = 'iridis_savedgame.s64';
+	hasSnapshot: function(storageSnapshot) {
 		try {
 			var fst = FS.stat('data/'+storageSnapshot);
 			return storageSnapshot;
@@ -439,6 +439,29 @@ var Module = {
 		}
 		return null;
 	},
+	hasSavedGame: function() {
+    return Module.hasSnapshot(progressSnapshot);
+	},
+	loadHighScoreGame: function() {
+    var snapshot = Module.hasSnapshot(highScoreSnapshot);
+    if (!snapshot) {
+      return;
+    }
+    Module.loadGame(snapshot);
+  },
+	saveHighScoreGame: function(score) {
+    var key = "iridis_hiscore";
+    var chs = parseInt(localStorage.getItem(key), 10);
+    if (!chs) {
+      chs = 0;
+    }
+    if (score <= chs) {
+      return false;
+    }
+    Module.saveGame(highScoreSnapshot);
+    localStorage.setItem(key, score);
+    return true;
+  },
 	maybeSaveGame: function(storageSnapshot) {
     var l = Module.saveSnapshotData()[1];
     var s = new TextDecoder("latin1").decode(l);
@@ -452,6 +475,8 @@ var Module = {
     if (score == 0) {
       return;
     }
+    Module.maybeSaveHighScoreGame(score);
+
     var level = /\xb4([0-9]{2})/.exec(s)[1];
     var energy = /‘“([0-9A-F]{1}[0-9A-F]{1})/.exec(s)[1];
     console.log("Score", score, "Level", level, "Energy", energy);

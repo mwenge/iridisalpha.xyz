@@ -333,14 +333,24 @@ var arrow_keys_handler = function(e) {
           break;
         default: break;
     }
-    if (e.keyCode == 37) {
-      changeIcon('favicon-left.png');
-    } else if (e.keyCode == 39) {
-      changeIcon('favicon-right.png');
-    } else if (e.keyCode == 83) {
-      Module.saveGame('iridis_progress.s64');
-    } else if (e.keyCode == 82) {
-      Module.loadGame('iridis_progress.s64');
+    switch(e.keyCode){
+      case 37:
+        changeIcon('favicon-left.png');
+        break;
+      case 39:
+        changeIcon('favicon-right.png');
+        break;
+      case 83:
+        Module.saveGame('iridis_progress.s64');
+        break;
+      case 82:
+        Module.loadGame('iridis_progress.s64');
+        break;
+      case 72:
+        Module.loadHighScoreGame();
+        break;
+      default:
+          break;
     }
 };
 
