@@ -475,7 +475,7 @@ var Module = {
     if (score == 0) {
       return;
     }
-    Module.maybeSaveHighScoreGame(score);
+    Module.saveHighScoreGame(score);
 
     var level = /\xb4([0-9]{2})/.exec(s)[1];
     var energy = /‘“([0-9A-F]{1}[0-9A-F]{1})/.exec(s)[1];
